@@ -32,44 +32,32 @@
 
   <section class="say">
     <h1>The ROS 2 cheat sheet</h1>
-    <p class="lead">Two pages to print and keep next to the keyboard: the ideas, the commands you type every day, one complete node, how to move a robot, the six-project roadmap from the article, a debugging checklist and every link.</p>
-
-    <dl class="honest">
-      <div>
-        <dt>What it is</dt>
-        <dd>The sheet I wish I had on day one, written after 24 ROS&nbsp;2 projects in eleven months, starting from zero. Free. A4, two sides, yours to print and share.</dd>
-      </div>
-      <div>
-        <dt>What it is not</dt>
-        <dd>A course, a newsletter or a funnel. Your details go into a private database and are used for one thing: telling you when the free live workshop happens, if you asked.</dd>
-      </div>
-    </dl>
+    <p class="lead">24 ROS&nbsp;2 projects in 11 months, from zero. This is the two-page sheet I wish I had on day one. <b>Free.</b></p>
 
     <figure class="sheet">
       <a href="assets/cheatsheet-p1.jpg" target="_blank" rel="noopener" title="Open page 1 at full size">
         <img src="assets/cheatsheet-p1.jpg" alt="Page one of the cheat sheet: the ideas, the everyday commands, one complete node, moving a robot, and the messages you will meet." width="1600" height="1131">
       </a>
-      <figcaption>Page 1 of 2. The map in the corner is my room, built by a $200 LiDAR rover in Project&nbsp;2.</figcaption>
+      <figcaption>Page 1 of 2</figcaption>
     </figure>
   </section>
 
   <section class="ask" aria-live="polite">
     <form id="signup" novalidate>
       <h2>Get the PDF</h2>
-      <p class="hint">Leave your details once. The download opens straight after.</p>
 
       <label class="field">
-        <span class="label">Your name</span>
+        <span class="label">Name</span>
         <input name="name" type="text" autocomplete="name" required maxlength="80">
       </label>
 
       <label class="field">
-        <span class="label">Best email <small>the one you actually read</small></span>
+        <span class="label">Email</span>
         <input name="email" type="email" autocomplete="email" inputmode="email" required maxlength="254">
       </label>
 
       <fieldset class="field">
-        <legend class="label">How much ROS&nbsp;2 have you done?</legend>
+        <legend class="label">ROS&nbsp;2 experience</legend>
         <div class="choices">
           <label><input type="radio" name="experience" value="new" checked><span>None yet</span></label>
           <label><input type="radio" name="experience" value="tutorials"><span>The tutorials</span></label>
@@ -80,7 +68,7 @@
 
       <label class="check">
         <input type="checkbox" name="workshop" value="yes">
-        <span><b>Tell me when the free live ROS&nbsp;2 workshop happens.</b> Five days, online, ten people, free. It runs once ten people are in; you get one email when the dates are set.</span>
+        <span><b>I want the free live ROS&nbsp;2 workshop</b><small class="sub">5 days · 10 people · runs once 10 sign up</small></span>
       </label>
 
       <!-- bots fill this in; people never see it -->
@@ -88,12 +76,12 @@
 
       <p class="error" id="form-error" role="alert" hidden></p>
       <button type="submit" id="submit">Get the cheat sheet</button>
-      <p class="fine">Stored in a private database. No newsletter, nothing shared. Want your row gone? <a href="https://x.com/BharatJain8873" data-link="x">Message me</a> and it is deleted the same day.</p>
+      <p class="fine">Private. No newsletter.</p>
     </form>
 
     <div id="done" class="done" hidden tabindex="-1">
       <h2 id="done-title">Thanks. Here is your sheet.</h2>
-      <p id="done-note">Print it double-sided, landscape, and keep it next to the keyboard.</p>
+      <p id="done-note"></p>
       <a id="download" class="button" href="assets/ros2-cheatsheet.pdf" download="ros2-cheatsheet.pdf">Download the PDF</a>
       <p class="fine" id="done-fine"></p>
     </div>

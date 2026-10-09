@@ -110,3 +110,6 @@ button:disabled{background:#8a8a86;border-color:#8a8a86;cursor:progress}
   body{overflow:visible}
   .ask,.top nav{display:none}
 }
+
+.check .sub{display:block;margin-top:2px;font-size:.92em}
+#done-note:empty{display:none}
