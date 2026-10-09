@@ -2,510 +2,376 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>The ROS 2 Cheatsheet · Bharat Jain</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=block" rel="stylesheet">
+<title>The ROS 2 cheat sheet</title>
 <style>
-  @page { size: A4; margin: 0; }
-  :root {
-    --paper: #f3efe6; --paper-2: #e9e3d5; --card: #fbf9f4; --ink: #14130f; --ink-2: #3b3932;
-    --muted: #706b60; --rule: #d6cfbf; --accent: #e8562a;
-    --serif: "Instrument Serif", Georgia, serif; --sans: "Geist", system-ui, sans-serif; --mono: "Geist Mono", Menlo, monospace;
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; background: var(--paper); color: var(--ink); font: 400 10pt/1.5 var(--sans); -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-  .page { width: 210mm; height: 297mm; padding: 18mm 18mm 16mm; position: relative; overflow: hidden; break-after: page; display: flex; flex-direction: column; }
-  .page:last-child { break-after: auto; }
-  .head { display: flex; justify-content: space-between; font: 500 7.5pt/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); padding-bottom: 5mm; border-bottom: 1px solid var(--rule); margin-bottom: 8mm; }
-  .head b { color: var(--accent); font-weight: 500; }
-  .foot { margin-top: auto; display: flex; justify-content: space-between; font: 400 7.5pt/1 var(--mono); color: var(--muted); padding-top: 4mm; border-top: 1px solid var(--rule); }
-  h1, h2, h3 { margin: 0; font-weight: 400; }
-  h2 { font-family: var(--serif); font-size: 32pt; line-height: 1; letter-spacing: -.01em; margin-bottom: 3mm; }
-  h2 i { color: var(--muted); }
-  h3 { font-size: 11.5pt; font-weight: 600; margin: 0 0 1.5mm; letter-spacing: -.005em; }
-  p { margin: 0 0 2.6mm; }
-  .lede { font-size: 11pt; color: var(--ink-2); max-width: 150mm; margin-bottom: 7mm; }
-  .eyebrow { font: 500 7.5pt/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 3mm; }
-  .num { font: 500 8pt var(--mono); color: var(--accent); }
-  a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--accent); text-underline-offset: 2px; }
-  code, .mono { font-family: var(--mono); font-size: 8.6pt; }
-  p code, li code, td code { background: var(--paper-2); padding: .3mm 1.2mm; border-radius: 1.2mm; }
-  pre { margin: 0 0 4mm; padding: 4mm 4.5mm; background: var(--ink); color: #efe9dc; border-radius: 3mm; font: 400 7.9pt/1.6 var(--mono); white-space: pre; overflow: hidden; }
-  pre .c { color: #9a9384; }
-  pre .k { color: #ff8a5c; }
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm 8mm; }
-  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; }
-  .card { background: var(--card); border: 1px solid var(--rule); border-radius: 3mm; padding: 5mm; }
-  .card p:last-child { margin-bottom: 0; }
-  .note { border-left: 2px solid var(--accent); padding: 1mm 0 1mm 4mm; color: var(--ink-2); margin: 4mm 0; }
-  table { width: 100%; border-collapse: collapse; margin-bottom: 4mm; }
-  th { text-align: left; font: 500 7.5pt var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); padding: 0 3mm 2mm 0; border-bottom: 1px solid var(--ink); }
-  td { padding: 2.1mm 3mm 2.1mm 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
-  td:first-child { white-space: nowrap; }
-  td code { background: none; padding: 0; font-size: 8.3pt; }
-  ul { margin: 0 0 3mm; padding-left: 4.5mm; }
-  li { margin-bottom: 1.2mm; }
-  .tick li { list-style: none; position: relative; }
-  .tick { padding-left: 5mm; }
-  .tick li::before { content: ""; position: absolute; left: -5mm; top: 1.7mm; width: 2mm; height: 2mm; border: 1.2px solid var(--accent); border-radius: .5mm; }
-  .cli td { padding-top: 1.6mm; padding-bottom: 1.6mm; }
-  .cli td code { font-size: 7.3pt; }
-  .cli td:last-child { font-size: 8.6pt; color: var(--ink-2); }
-  .split { grid-template-columns: .85fr 1.15fr; }
-  .tag { display: inline-block; font: 500 7pt var(--mono); border: 1px solid var(--rule); border-radius: 10mm; padding: .8mm 2.4mm; margin: 0 1mm 1mm 0; color: var(--ink-2); }
+@font-face{font-family:"Fraunces";src:url(../fonts/Fraunces.ttf) format("truetype");font-weight:100 900;font-style:normal;font-display:block}
+@font-face{font-family:"Fraunces";src:url(../fonts/Fraunces-Italic.ttf) format("truetype");font-weight:100 900;font-style:italic;font-display:block}
+@font-face{font-family:"Plex Mono";src:url(../fonts/IBMPlexMono-Regular.ttf) format("truetype");font-weight:400}
+@font-face{font-family:"Plex Mono";src:url(../fonts/IBMPlexMono-Medium.ttf) format("truetype");font-weight:500}
+@font-face{font-family:"Plex Mono";src:url(../fonts/IBMPlexMono-SemiBold.ttf) format("truetype");font-weight:600}
 
-  /* cover */
-  .cover { background: var(--ink); color: var(--paper); }
-  .cover .head, .cover .foot { border-color: #34322b; color: #9a9384; }
-  .cover h1 { font-family: var(--serif); font-size: 72pt; line-height: .92; letter-spacing: -.02em; margin: 26mm 0 8mm; }
-  .cover h1 i { color: #9a9384; }
-  .cover .lede { color: #cfc8b8; font-size: 12.5pt; }
-  .cover .stats { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid #34322b; border-bottom: 1px solid #34322b; margin: 10mm 0; }
-  .cover .stats div { padding: 5mm 4mm; border-left: 1px solid #34322b; }
-  .cover .stats div:first-child { border-left: 0; padding-left: 0; }
-  .cover .stats b { display: block; font: 400 26pt/1 var(--serif); color: var(--paper); margin-top: 2mm; }
-  .cover .stats span { font: 500 7pt var(--mono); letter-spacing: .1em; text-transform: uppercase; color: #9a9384; }
-  .toc { columns: 2; column-gap: 10mm; list-style: none; padding: 0; margin: 0; }
-  .toc li { display: flex; gap: 4mm; padding: 2.2mm 0; border-bottom: 1px solid #34322b; break-inside: avoid; color: #e5dfd2; }
-  .toc li span { font: 500 8pt var(--mono); color: var(--accent); width: 7mm; }
+:root{
+  --field:#e4e4e1;   /* unknown space */
+  --paper:#ffffff;   /* free space */
+  --ink:#000000;     /* occupied */
+  --mute:#5c5c58;
+  --rule:#d2d2cd;
+  --blue:#4556ff;    /* turtlesim's background colour, RGB 69 86 255 */
+  --blue-deep:#2d3bd1;
+}
+@page{size:A4 landscape;margin:0}
+*{box-sizing:border-box;margin:0;padding:0;min-width:0}
+html,body{background:var(--field)}
+body{font-family:"Fraunces",Georgia,serif;font-optical-sizing:auto;color:var(--ink);font-size:7.45pt;line-height:1.26;-webkit-font-smoothing:antialiased;font-feature-settings:"lnum" 1}
+.page{width:297mm;height:210mm;padding:8mm 8mm 6mm;position:relative;overflow:hidden;break-after:page;background:var(--field);display:flex;flex-direction:column}
+.page:last-child{break-after:auto}
+code,.mono,pre{font-family:"Plex Mono",ui-monospace,Menlo,monospace;font-size:6.3pt;line-height:1.33;font-weight:400}
+pre{white-space:pre;overflow:hidden}
+b,strong{font-weight:600}
+em{font-style:italic}
+.ph{color:var(--blue)}          /* a placeholder you replace */
+.c{color:var(--mute)}           /* comment / aside */
+a{color:var(--blue);text-decoration:none}
 
-  /* diagrams */
-  svg text { font-family: var(--sans); }
-  .roadmap { position: relative; margin-top: 2mm; }
-  .stop { display: grid; grid-template-columns: 16mm 1fr 52mm; gap: 5mm; padding: 4mm 0; border-bottom: 1px solid var(--rule); align-items: start; position: relative; }
-  .stop .dot { width: 11mm; height: 11mm; border-radius: 50%; border: 1.5px solid var(--ink); display: grid; place-items: center; font: 500 9pt var(--mono); background: var(--paper); position: relative; z-index: 1; }
-  .stop.hi .dot { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .roadmap::before { content: ""; position: absolute; left: 5.5mm; top: 8mm; bottom: 8mm; width: 1.5px; background: var(--ink); }
-  .stop h3 { margin-bottom: 1mm; }
-  .stop p { margin: 0; color: var(--ink-2); font-size: 9.3pt; }
-  .stop .learn { font-size: 8.4pt; color: var(--muted); }
-  .stop .learn b { display: block; font: 500 7pt var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); margin-bottom: 1mm; }
-  .phase { font: 500 7pt var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--accent); margin: 4mm 0 0 21mm; }
+/* ---- masthead: the one bold element is a real map ---- */
+.mast{display:grid;grid-template-columns:1fr auto;column-gap:8mm;align-items:end;height:32mm;margin-bottom:2.4mm}
+h1{font-size:28pt;line-height:.96;font-weight:500;letter-spacing:-.012em;font-variation-settings:"opsz" 144}
+.mast .intro{font-size:8.6pt;line-height:1.3;margin-top:2.2mm;font-variation-settings:"opsz" 11;max-width:118mm}
+.mast .meta{margin-top:1.6mm;font-size:7.3pt;color:var(--mute)}
+.mapbox{display:flex;align-items:flex-end;justify-content:flex-end;column-gap:3.2mm;height:32mm}
+.mapbox img{display:block;height:32mm;width:auto;image-rendering:pixelated;image-rendering:crisp-edges}
+.mapbox .cap{font-size:7pt;line-height:1.25;color:var(--mute);text-align:right;max-width:52mm;padding-bottom:.3mm}
+.mapbox .cap .scale{display:block;margin-top:1.1mm;font-family:"Plex Mono";font-size:5.8pt}
+.mapbox .cap .bar{display:inline-block;width:6.2mm;height:0;border-top:.5pt solid var(--mute);vertical-align:middle;margin-right:1.2mm;position:relative;top:-.15mm}
+
+/* ---- panels: white rooms on the grey field, walls 0.5pt ---- */
+.cols{display:grid;grid-template-columns:68mm 70mm 1fr;column-gap:3.2mm;align-items:start;flex:1 1 auto}
+.col{display:flex;flex-direction:column;row-gap:3.2mm}
+.panel{background:var(--paper);border:.5pt solid var(--ink);padding:2.2mm 2.8mm 2.6mm}
+.panel h2{font-size:10pt;line-height:1.1;font-weight:600;letter-spacing:-.005em;margin-bottom:1.5mm;font-variation-settings:"opsz" 14}
+.panel h2 small{font-weight:400;color:var(--mute);font-size:7.2pt;margin-left:1.4mm}
+.panel p{margin-bottom:1mm}
+.panel p:last-child{margin-bottom:0}
+
+.defs{display:grid;grid-template-columns:14mm 1fr;column-gap:1.8mm;row-gap:.95mm}
+.defs dt{font-weight:600;font-size:7.7pt;line-height:1.25}
+.defs dd{line-height:1.25}
+.defs code{font-size:6.3pt}
+
+/* command list */
+.cmd .r{padding:.95mm 0 1.05mm;border-bottom:.4pt solid var(--rule)}
+.cmd .r:first-child{padding-top:0}
+.cmd .r:last-child{border-bottom:0;padding-bottom:0}
+.cmd code{display:block;font-weight:500;font-size:6.4pt;line-height:1.3;word-break:break-all}
+.cmd .d{display:block;font-size:7pt;line-height:1.22;color:var(--mute);margin-top:.3mm}
+
+/* the node */
+.node{display:grid;grid-template-columns:1fr 44mm;column-gap:3.5mm}
+pre.code{font-size:6.2pt;line-height:1.25}
+pre.code .k{color:var(--mute)}
+.notes p{font-size:7.2pt;line-height:1.27;margin-bottom:1.2mm;color:#1c1c1a}
+pre.tree{font-size:6.4pt;line-height:1.34}
+
+/* twin panels under the node */
+.twin{display:grid;grid-template-columns:1.04fr 1fr;column-gap:3.2mm;align-items:start}
+.keys{display:grid;grid-template-columns:repeat(3,5.2mm);gap:.6mm;margin:1mm 0 1mm}
+.keys b{display:block;height:5.2mm;border:.5pt solid var(--ink);text-align:center;line-height:5mm;font-family:"Plex Mono";font-weight:500;font-size:7pt;background:var(--paper)}
+.keys b.k{background:var(--ink);color:#fff}
+.kv{display:grid;grid-template-columns:auto 1fr;column-gap:2.5mm;row-gap:.7mm;align-items:baseline}
+.kv code{font-weight:500}
+table{border-collapse:collapse;width:100%}
+td,th{text-align:left;vertical-align:top;padding:.55mm 1.5mm .55mm 0;border-bottom:.4pt solid var(--rule);font-size:7pt;line-height:1.24}
+th{font-weight:600}
+tr:last-child td{border-bottom:0}
+td code{font-size:6.2pt}
+.msgs td:first-child{white-space:nowrap}
+.msgs td:first-child code{font-weight:500}
+.msgs td:first-child small{display:block;font-family:"Plex Mono";font-size:5.6pt;color:var(--mute);line-height:1.3}
+
+/* ---- page 2 ---- */
+.head2{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:2.6mm}
+.head2 h1{font-size:15pt;font-weight:600;letter-spacing:-.005em;font-variation-settings:"opsz" 36}
+.head2 .right{font-size:7.3pt;color:var(--mute)}
+.road{display:grid;grid-template-columns:repeat(7,1fr);border:.5pt solid var(--ink);background:var(--paper);margin-bottom:3.2mm}
+.road .step{padding:2.2mm 2.5mm 2.3mm;border-right:.5pt solid var(--ink);display:flex;flex-direction:column}
+.road .step:last-child{border-right:0}
+.road .n{font-size:19pt;line-height:.9;font-weight:500;font-variation-settings:"opsz" 72;margin-bottom:1.3mm}
+.road h3{font-size:8.8pt;line-height:1.12;font-weight:600;margin-bottom:1.1mm;font-variation-settings:"opsz" 11}
+.road p{font-size:6.9pt;line-height:1.27;color:#1c1c1a}
+.road .tools{margin-top:auto;padding-top:1.2mm;font-size:6.4pt;line-height:1.33;color:var(--mute)}
+.road .tools code{font-size:6pt;color:var(--ink)}
+.road .step.zero .n{color:var(--blue)}
+
+.grid3{display:grid;grid-template-columns:.98fr 1.1fr .92fr;column-gap:3.2mm;align-items:start;margin-bottom:3.2mm}
+ol.debug{padding-left:3.2mm}
+ol.debug li{margin-bottom:.85mm;line-height:1.25}
+ol.debug li::marker{font-weight:600}
+
+.links{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;column-gap:4mm}
+.links h3{font-size:8.4pt;font-weight:600;margin:0 0 1mm}
+.links ul{list-style:none}
+.links li{margin-bottom:.9mm;line-height:1.18}
+.links li b{font-weight:500;font-size:7.3pt;display:block}
+.links li a{font-family:"Plex Mono";font-size:5.9pt;color:var(--blue-deep);word-break:break-all;display:block}
+.foot{margin-top:auto;padding-top:1.6mm;display:flex;justify-content:space-between;font-size:7pt;color:var(--mute)}
+.foot a{color:var(--mute)}
 </style>
 </head>
 <body>
 
-<!-- 1. COVER -->
-<section class="page cover">
-  <div class="head"><span>Bharat Jain · ROS 2 from zero</span><span>Cheatsheet · v1</span></div>
-  <p class="eyebrow" style="color:#9a9384">A field guide for complete beginners</p>
-  <h1>The ROS&nbsp;2<br><i>Cheatsheet.</i></h1>
-  <p class="lede">The only ROS&nbsp;2 basics you need before getting started, the commands you will type every day, and the seven projects that took me from a complete beginner to proficient.</p>
-  <div class="stats">
-    <div><span>Projects</span><b>24</b></div>
-    <div><span>Months</span><b>11</b></div>
-    <div><span>Earned</span><b>$10k+</b></div>
-    <div><span>Prior experience</span><b>0 yrs</b></div>
+<!-- ============================ PAGE 1 ============================ -->
+<section class="page">
+  <header class="mast">
+    <div>
+      <h1>The ROS 2 cheat sheet</h1>
+      <p class="intro">The concepts, the commands you type every day, one complete node, and how to move a robot. Page 2 has the six-project roadmap, the tools, a debugging checklist and every link from the article.</p>
+      <div class="meta">Works for Humble, Jazzy and Lyrical. Written by Bharat Jain, October 2026, version 1.0.</div>
+    </div>
+    <div class="mapbox" aria-hidden="true">
+      <div class="cap">A real map: my room, built by a $200 LiDAR rover in Project 2. White is free, black is occupied, grey is unknown. The blue square is the robot.<span class="scale"><span class="bar"></span>1 m = 20 cells of 5 cm</span></div>
+      <img src="../assets/room-map.png" alt="">
+    </div>
+  </header>
+
+  <div class="cols">
+    <!-- column 1 -->
+    <div class="col">
+      <div class="panel">
+        <h2>The ideas</h2>
+        <dl class="defs">
+          <dt>Node</dt><dd>One program with one job: camera driver, planner, motor controller. Python: <code>rclpy</code>. C++: <code>rclcpp</code>.</dd>
+          <dt>Topic</dt><dd>A named stream. Publishers write, any number of subscribers read, nobody replies: <code>/scan</code>, <code>/cmd_vel</code>.</dd>
+          <dt>Service</dt><dd>One request, one reply, like “spawn a turtle at (2,&nbsp;2)”.</dd>
+          <dt>Action</dt><dd>A long task you can watch and cancel: “navigate to this pose”.</dd>
+          <dt>Parameter</dt><dd>A node’s settings, changeable while it runs: <code>max_speed</code>, <code>use_sim_time</code>.</dd>
+          <dt>Interface</dt><dd>The typed data on the wire: <code>.msg</code>, <code>.srv</code>, <code>.action</code> files. Common ones: table on the right.</dd>
+          <dt>Package</dt><dd>A folder of nodes with a <code>package.xml</code>. A workspace holds many packages under <code>src/</code>.</dd>
+          <dt>Launch</dt><dd>A <code>.launch.py</code> file starts several nodes with their parameters in one go.</dd>
+          <dt>tf2</dt><dd>The tree of coordinate frames, <code>map → odom → base_link → laser</code>. Every reading lives in a frame.</dd>
+          <dt>QoS</dt><dd>Delivery settings per topic. Sensors publish <em>best effort</em>; a <em>reliable</em> subscriber then hears nothing.</dd>
+        </dl>
+      </div>
+
+      <div class="panel">
+        <h2>Workspace <small>build once, source everywhere</small></h2>
+<pre class="tree">ros2_ws/src/my_pkg/
+  package.xml        <span class="c">name, dependencies</span>
+  setup.py           <span class="c">entry_points → ros2 run</span>
+  my_pkg/bumper.py   <span class="c">your nodes</span></pre>
+<pre class="tree" style="margin-top:1.2mm">source /opt/ros/jazzy/setup.bash
+cd ~/ros2_ws/src
+ros2 pkg create --build-type ament_python \
+  my_pkg
+cd ~/ros2_ws &amp;&amp; colcon build --symlink-install
+source install/setup.bash</pre>
+        <p class="c" style="margin-top:1mm">Build from the workspace root, not inside <code>src</code>. Put both <code>source</code> lines in <code>~/.bashrc</code>.</p>
+      </div>
+    </div>
+
+    <!-- column 2: commands -->
+    <div class="col">
+      <div class="panel">
+        <h2>Commands you will type every day</h2>
+        <div class="cmd">
+          <div class="r"><code>ros2 run <span class="ph">pkg</span> <span class="ph">executable</span></code><span class="d">Start one node</span></div>
+          <div class="r"><code>ros2 launch <span class="ph">pkg</span> <span class="ph">robot</span>.launch.py use_sim_time:=true</code><span class="d">Start several nodes, with arguments</span></div>
+          <div class="r"><code>ros2 node list<br>ros2 node info /<span class="ph">node</span></code><span class="d">What is running; what a node publishes, subscribes to and serves</span></div>
+          <div class="r"><code>ros2 topic list -t<br>ros2 topic info -v /<span class="ph">topic</span><br>ros2 interface show geometry_msgs/msg/Twist</code><span class="d">Topics with types; who publishes and subscribes, with QoS; the fields of a type</span></div>
+          <div class="r"><code>ros2 topic echo /scan --once<br>ros2 topic hz /scan</code><span class="d">Print one message; measure the rate</span></div>
+          <div class="r"><code>ros2 topic pub -r 10 /cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.2}, angular: {z: 0.5}}"</code><span class="d">Publish from the terminal, ten times a second</span></div>
+          <div class="r"><code>ros2 service list -t<br>ros2 service call /spawn turtlesim/srv/Spawn "{x: 2.0, y: 2.0, name: 't2'}"</code><span class="d">List services; call one with a YAML request</span></div>
+          <div class="r"><code>ros2 action list -t<br>ros2 action send_goal /navigate_to_pose nav2_msgs/action/NavigateToPose "{pose: {header: {frame_id: map}, pose: {position: {x: 1.0}, orientation: {w: 1.0}}}}" --feedback</code><span class="d">List actions; send a goal and watch the feedback</span></div>
+          <div class="r"><code>ros2 param list<br>ros2 param get /<span class="ph">node</span> <span class="ph">name</span><br>ros2 param set /<span class="ph">node</span> <span class="ph">name</span> <span class="ph">value</span></code><span class="d">Read and change settings while the node runs</span></div>
+          <div class="r"><code>ros2 bag record -a -o run1<br>ros2 bag play run1</code><span class="d">Record every topic; replay it later without the robot</span></div>
+          <div class="r"><code>rviz2<br>rqt_graph<br>ros2 doctor --report</code><span class="d">Sensors and map in 3D; the live node graph; check the install</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- column 3: a node, then moving a robot + messages -->
+    <div class="col">
+      <div class="panel">
+        <h2>One complete node <small>subscribe, decide, publish</small></h2>
+        <div class="node">
+<pre class="code">import rclpy
+from rclpy.node import Node
+from geometry_msgs.msg import Twist
+from sensor_msgs.msg import LaserScan
+
+class Bumper(Node):
+    def __init__(self):
+        super().__init__('bumper')
+        self.pub = self.create_publisher(Twist, '/cmd_vel', 10)
+        self.create_subscription(LaserScan, '/scan',
+                                 self.on_scan, 10)
+        self.create_timer(0.1, self.tick)     <span class="k"># 10 Hz</span>
+        self.ahead = 9.9
+
+    def on_scan(self, msg):
+        self.ahead = min(r for r in msg.ranges if r &gt; 0.05)
+
+    def tick(self):
+        cmd = Twist()
+        if self.ahead &gt; 0.5:
+            cmd.linear.x = 0.2    <span class="k"># m/s, forward</span>
+        else:
+            cmd.angular.z = 0.6   <span class="k"># rad/s, turn left</span>
+        self.pub.publish(cmd)
+
+def main():
+    rclpy.init()
+    rclpy.spin(Bumper())
+    rclpy.shutdown()</pre>
+          <div class="notes">
+            <p><b>What it does.</b> Drives forward until the LiDAR sees something within half a metre, then turns left until the way is clear.</p>
+            <p><b>The three parts</b> of almost every node: a publisher that sends <code>Twist</code> commands, a subscriber whose callback runs on each <code>LaserScan</code>, and a timer that decides ten times a second. <code>spin()</code> keeps them running.</p>
+            <p><b>Run it.</b> Save as <code>my_pkg/bumper.py</code>, add <code>'bumper = my_pkg.bumper:main'</code> under <code>console_scripts</code> in <code>setup.py</code>, build, then <code>ros2 run my_pkg bumper</code>.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="twin">
+        <div class="panel">
+          <h2>Moving a robot <small>the <code>/cmd_vel</code> topic</small></h2>
+          <div class="kv">
+            <code>linear.x</code><span>forward speed in m/s; 0.2 is a safe start</span>
+            <code>angular.z</code><span>turning speed in rad/s, positive turns left; try 0.5</span>
+          </div>
+          <p style="margin-top:1.5mm"><code>ros2 run teleop_twist_keyboard teleop_twist_keyboard</code> drives anything that listens on <code>/cmd_vel</code>:</p>
+          <div class="keys"><b>u</b><b>i</b><b>o</b><b>j</b><b class="k">k</b><b>l</b><b>m</b><b>,</b><b>.</b></div>
+          <p><b>i</b> forward, <b>,</b> back, <b>j</b> and <b>l</b> turn on the spot, corners drive in arcs, <b>k</b> or any other key stops. <b>q/z</b> change both speeds by 10%, <b>w/x</b> linear only, <b>e/c</b> angular only.</p>
+        </div>
+        <div class="panel">
+          <h2>Messages you will meet</h2>
+          <table class="msgs">
+            <tr><td><code>Twist</code><small>geometry_msgs/msg</small></td><td>A velocity command: <code>linear.x</code> and <code>angular.z</code></td></tr>
+            <tr><td><code>LaserScan</code><small>sensor_msgs/msg</small></td><td>One LiDAR sweep: <code>ranges[]</code> plus the angles they were taken at</td></tr>
+            <tr><td><code>Image</code><small>sensor_msgs/msg</small></td><td>A camera frame; <code>cv_bridge</code> turns it into an OpenCV image</td></tr>
+            <tr><td><code>Odometry</code><small>nav_msgs/msg</small></td><td>Where the wheels think the robot is, and how fast it moves</td></tr>
+            <tr><td><code>OccupancyGrid</code><small>nav_msgs/msg</small></td><td>The map: cells of −1 unknown, 0 free, 100 occupied</td></tr>
+            <tr><td><code>PoseStamped</code><small>geometry_msgs/msg</small></td><td>A position and heading in a named frame, such as a goal</td></tr>
+            <tr><td><code>NavigateToPose</code><small>nav2_msgs/action</small></td><td>The action behind “drive there”</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
-  <ol class="toc">
-    <li><span>02</span>What ROS&nbsp;2 is, and when you need it</li>
-    <li><span>03</span>Nodes, topics, services, actions</li>
-    <li><span>04</span>Packages and workspaces</li>
-    <li><span>05</span>The CLI commands you'll actually use</li>
-    <li><span>06</span>Tools, hardware and setup</li>
-    <li><span>07</span>The visual roadmap</li>
-    <li><span>08</span>Projects 0–2: move, teleop, map</li>
-    <li><span>09</span>Projects 3–6: explore, see, talk, grasp</li>
-    <li><span>10</span>Learning on demand + every link</li>
-  </ol>
-  <div class="foot"><span>Read it once. Come back to it as you build.</span><span>01</span></div>
 </section>
 
-<!-- 2. WHAT & WHEN -->
+<!-- ============================ PAGE 2 ============================ -->
 <section class="page">
-  <div class="head"><span><b>02</b> · Foundations</span><span>The ROS 2 Cheatsheet</span></div>
-  <h2>What ROS&nbsp;2 is, <i>and when you need it.</i></h2>
-  <p class="lede">ROS, the Robot Operating System, is by far the most widely used tool in robotics. NASA picked ROS&nbsp;2 for the ground software of its VIPER Moon rover. And all you need to start is a laptop.</p>
-
-  <div class="grid2">
-    <div>
-      <h3>The problem it solves</h3>
-      <p>Picture a self-driving car: LiDAR and cameras to see, a computer to decide, motors to steer, accelerate and brake.</p>
-      <p>Every sensor speaks at its own rate and in its own format. A LiDAR produces hundreds of thousands of 3D points a second; a camera sends around 30 images a second. All of it has to be processed in parallel and turned into commands.</p>
-      <p>Without ROS you would write a whole messaging system before a single line of driving logic. And if it all lives in one giant program, one bug in the camera code takes everything down.</p>
-      <div class="note"><b>ROS is the reliable communication layer</b> between all the parts of your robot, so you can work on higher-level logic instead of plumbing.</div>
-    </div>
-    <div>
-      <svg viewBox="0 0 300 250" width="100%" aria-label="Sensors publish to ROS 2, which connects planning and actuators">
-        <defs><marker id="a" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8z" fill="#14130f"/></marker></defs>
-        <g font-size="10">
-          <rect x="6" y="20" width="78" height="30" rx="6" fill="#fbf9f4" stroke="#d6cfbf"/><text x="45" y="39" text-anchor="middle">LiDAR</text>
-          <rect x="6" y="64" width="78" height="30" rx="6" fill="#fbf9f4" stroke="#d6cfbf"/><text x="45" y="83" text-anchor="middle">Camera</text>
-          <rect x="6" y="108" width="78" height="30" rx="6" fill="#fbf9f4" stroke="#d6cfbf"/><text x="45" y="127" text-anchor="middle">IMU / GPS</text>
-          <rect x="112" y="20" width="76" height="118" rx="10" fill="#14130f"/><text x="150" y="74" text-anchor="middle" fill="#f3efe6" font-size="13" font-family="Instrument Serif">ROS 2</text><text x="150" y="90" text-anchor="middle" fill="#9a9384" font-size="8">messages</text>
-          <rect x="216" y="20" width="78" height="30" rx="6" fill="#fbf9f4" stroke="#d6cfbf"/><text x="255" y="39" text-anchor="middle">Perception</text>
-          <rect x="216" y="64" width="78" height="30" rx="6" fill="#fbf9f4" stroke="#d6cfbf"/><text x="255" y="83" text-anchor="middle">Planning</text>
-          <rect x="216" y="108" width="78" height="30" rx="6" fill="#e8562a"/><text x="255" y="127" text-anchor="middle" fill="#fff">Motors</text>
-          <path d="M84 35H110M84 79H110M84 123H110M188 35H214M188 79H214M188 123H214" stroke="#14130f" marker-end="url(#a)"/>
-          <text x="6" y="170" fill="#706b60" font-size="9">Each box is its own program. If one crashes,</text>
-          <text x="6" y="184" fill="#706b60" font-size="9">the rest keep running.</text>
-        </g>
-      </svg>
-      <h3>Learn ROS&nbsp;2, not ROS&nbsp;1</h3>
-      <p>ROS&nbsp;1 reached end of life in May 2025. ROS&nbsp;2 is the version to learn today.</p>
-    </div>
+  <div class="head2">
+    <h1>The six projects, the tools, and what to do when nothing works</h1>
+    <div class="right">The ROS 2 cheat sheet, page 2 of 2</div>
   </div>
 
-  <div class="grid2" style="margin-top:4mm">
-    <div class="card"><p class="eyebrow" style="color:var(--accent)">Use ROS 2 when</p>
-      <ul class="tick"><li>Your robot has several sensors and motors</li><li>You need simulation before touching hardware</li><li>You want ready-made navigation (Nav2) or arm planning (MoveIt)</li><li>Several programs must share data in real time</li></ul></div>
-    <div class="card"><p class="eyebrow">Skip it when</p>
-      <ul><li>The project is simple, like a line-following robot</li><li>An Arduino sketch can do the whole job</li><li>There is one sensor, one motor and no simulation</li></ul></div>
+  <div class="road">
+    <div class="step zero"><div class="n">0</div><h3>Turtlesim</h3><p>The hello world. One node draws a turtle, another turns your arrow keys into velocity messages. Watch the topic to see them talk.</p><div class="tools"><code>ros2 run turtlesim turtlesim_node</code>, <code>turtle_teleop_key</code>, <code>ros2 topic echo /turtle1/cmd_vel</code></div></div>
+    <div class="step"><div class="n">1</div><h3>Teleop a real robot</h3><p>Drive a wheeled robot from your laptop over <code>/cmd_vel</code>. Run nodes across several terminals and watch the sensors in RViz.</p><div class="tools">TurtleBot3 or Waveshare UGV, <code>teleop_twist_keyboard</code>, <code>rviz2</code></div></div>
+    <div class="step"><div class="n">2</div><h3>Map a room</h3><p>SLAM builds an occupancy grid while you drive. Save it, give Nav2 a goal in RViz, and the robot plans a path and drives around whatever is in the way.</p><div class="tools"><code>slam_toolbox</code>, <code>map_saver_cli</code>, <code>nav2_bringup</code></div></div>
+    <div class="step"><div class="n">3</div><h3>Frontier exploration</h3><p>Your own node. Frontiers are free cells next to unknown ones: cluster them, score by size and distance, send the best to Nav2, repeat until none remain.</p><div class="tools"><code>OccupancyGrid</code>, <code>NavigateToPose</code>, a coding agent</div></div>
+    <div class="step"><div class="n">4</div><h3>Semantic navigation</h3><p>Capture images while exploring, let a vision-language model label them, store labels with poses in a vector database. “Go to the couch” finds the nearest match.</p><div class="tools">a VLM, Chroma, Nav2</div></div>
+    <div class="step"><div class="n">5</div><h3>Talk to the robot</h3><p>The ROS-MCP server exposes topics, services and actions as tools. Claude Code or Codex reads the sensors, plans, and drives from plain English.</p><div class="tools"><code>ros-mcp-server</code>, <code>rosbridge_server</code></div></div>
+    <div class="step"><div class="n">6</div><h3>A robot arm</h3><p>Build the $200 SO-101, wrap it in ROS 2, let MoveIt do the inverse kinematics. Record trajectories with the leader arm, replay them by hand or by LLM.</p><div class="tools">LeRobot, <code>ros2_control</code>, MoveIt 2</div></div>
   </div>
-  <div class="foot"><span>The ROS 2 Cheatsheet · Bharat Jain</span><span>02</span></div>
-</section>
-
-<!-- 3. CORE CONCEPTS -->
-<section class="page">
-  <div class="head"><span><b>03</b> · Core concepts</span><span>The ROS 2 Cheatsheet</span></div>
-  <h2>Nodes talk in <i>three ways.</i></h2>
-  <p class="lede">Each program in ROS&nbsp;2 is a <b>node</b>, and each node does one job. In the car, the LiDAR processor, camera processor, obstacle detection, planning and control are all separate nodes.</p>
-
-  <svg viewBox="0 0 520 150" width="100%" aria-label="Topics, services and actions between nodes" style="margin-bottom:5mm">
-    <defs><marker id="b" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8z" fill="#14130f"/></marker>
-      <marker id="o" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L8 4L0 8z" fill="#e8562a"/></marker></defs>
-    <g font-size="9.5">
-      <!-- topic -->
-      <text x="0" y="12" font-family="Geist Mono" font-size="8" fill="#e8562a">A · TOPIC</text>
-      <rect x="0" y="22" width="70" height="26" rx="13" fill="#14130f"/><text x="35" y="39" text-anchor="middle" fill="#f3efe6">lidar_node</text>
-      <rect x="92" y="25" width="56" height="20" rx="3" fill="#fbf9f4" stroke="#14130f" stroke-dasharray="3 2"/><text x="120" y="39" text-anchor="middle" font-family="Geist Mono" font-size="8">/lidar</text>
-      <rect x="0" y="70" width="70" height="26" rx="13" fill="#fbf9f4" stroke="#14130f"/><text x="35" y="87" text-anchor="middle">obstacles</text>
-      <rect x="80" y="70" width="70" height="26" rx="13" fill="#fbf9f4" stroke="#14130f"/><text x="115" y="87" text-anchor="middle">mapping</text>
-      <path d="M70 35H90" stroke="#14130f" marker-end="url(#b)"/><path d="M110 45L40 68M128 45L118 68" stroke="#14130f" marker-end="url(#b)"/>
-      <text x="0" y="118" fill="#706b60" font-size="8.5">One publishes, many subscribe.</text>
-      <!-- service -->
-      <text x="185" y="12" font-family="Geist Mono" font-size="8" fill="#e8562a">B · SERVICE</text>
-      <rect x="185" y="40" width="70" height="26" rx="13" fill="#14130f"/><text x="220" y="57" text-anchor="middle" fill="#f3efe6">planner</text>
-      <rect x="275" y="40" width="70" height="26" rx="13" fill="#fbf9f4" stroke="#14130f"/><text x="310" y="57" text-anchor="middle">map</text>
-      <path d="M255 47H273" stroke="#14130f" marker-end="url(#b)"/><path d="M275 60H257" stroke="#e8562a" marker-end="url(#o)"/>
-      <text x="185" y="88" fill="#706b60" font-size="8.5">“Speed limit here?” → “50”</text>
-      <text x="185" y="118" fill="#706b60" font-size="8.5">One request, one response.</text>
-      <!-- action -->
-      <text x="370" y="12" font-family="Geist Mono" font-size="8" fill="#e8562a">C · ACTION</text>
-      <rect x="370" y="40" width="64" height="26" rx="13" fill="#14130f"/><text x="402" y="57" text-anchor="middle" fill="#f3efe6">planner</text>
-      <rect x="452" y="40" width="64" height="26" rx="13" fill="#fbf9f4" stroke="#14130f"/><text x="484" y="57" text-anchor="middle">parking</text>
-      <path d="M434 46H450" stroke="#14130f" marker-end="url(#b)"/>
-      <path d="M452 56H436" stroke="#e8562a" stroke-dasharray="2 2"/><path d="M452 62H436" stroke="#e8562a" marker-end="url(#o)"/>
-      <text x="370" y="88" fill="#706b60" font-size="8.5">Goal → progress … → result</text>
-      <text x="370" y="118" fill="#706b60" font-size="8.5">Long tasks with updates.</text>
-    </g>
-  </svg>
-
-  <table>
-    <tr><th>Pattern</th><th>Use it for</th><th>Car example</th><th>Inspect it</th></tr>
-    <tr><td><b>Topic</b></td><td>Continuous streams of data</td><td>LiDAR points on <code>/lidar</code>, images on <code>/camera</code></td><td><code>ros2 topic echo /lidar</code></td></tr>
-    <tr><td><b>Service</b></td><td>Quick, one-off questions</td><td>Planner asks the map node for the speed limit</td><td><code>ros2 service call …</code></td></tr>
-    <tr><td><b>Action</b></td><td>Long tasks that report progress</td><td>“Park the car”, with updates until it's done</td><td><code>ros2 action send_goal …</code></td></tr>
-  </table>
 
   <div class="grid3">
-    <div class="card"><h3>Messages</h3><p>The typed data a topic carries, e.g. <code>geometry_msgs/Twist</code> for velocity. See any type with <code>ros2 interface show</code>.</p></div>
-    <div class="card"><h3>Parameters</h3><p>Per-node settings you can change without recompiling, like a max speed. <code>ros2 param list</code></p></div>
-    <div class="card"><h3>Launch files</h3><p>Start many nodes with their settings in one command: <code>ros2 launch pkg file.launch.py</code></p></div>
-  </div>
-  <div class="foot"><span>The ROS 2 Cheatsheet · Bharat Jain</span><span>03</span></div>
-</section>
-
-<!-- 4. PACKAGES & WORKSPACES -->
-<section class="page">
-  <div class="head"><span><b>04</b> · Code layout</span><span>The ROS 2 Cheatsheet</span></div>
-  <h2>Packages <i>and workspaces.</i></h2>
-  <p class="lede">All ROS&nbsp;2 code is organised and shared as <b>packages</b>. A <b>workspace</b> holds many packages, each in its own folder under <code>src/</code>.</p>
-
-  <div class="grid2 split">
-    <div>
-      <h3>A Python package</h3>
-<pre>my_package/
-  package.xml          <span class="c"># name + dependencies</span>
-  resource/my_package
-  setup.cfg
-  setup.py             <span class="c"># entry points for nodes</span>
-  my_package/          <span class="c"># your node .py files</span></pre>
-      <h3>A workspace</h3>
-<pre>workspace_folder/
-  src/
-    cpp_package_1/
-      CMakeLists.txt
-      include/cpp_package_1/
-      package.xml
-      src/
-    py_package_1/
-      package.xml
-      resource/py_package_1
-      setup.cfg
-      setup.py
-      py_package_1/
-  build/  install/  log/  <span class="c"># made by colcon</span></pre>
+    <div class="panel">
+      <h2>Tools, one line each</h2>
+      <dl class="defs" style="grid-template-columns:17mm 1fr">
+        <dt>RViz2</dt><dd>3D view of frames, LiDAR, camera, map and paths. Set the fixed frame to <code>map</code> first.</dd>
+        <dt>rqt_graph</dt><dd>Live picture of nodes and topics; the fastest way to spot a missing link.</dd>
+        <dt>Gazebo</dt><dd>Physics simulator, <code>gz sim</code>; <code>ros_gz_bridge</code> carries topics across.</dd>
+        <dt>SLAM Toolbox</dt><dd>Builds 2D maps from LiDAR and odometry. Start with <code>online_async_launch.py</code>.</dd>
+        <dt>Nav2</dt><dd>Costmaps, planners, controllers and recoveries behind one action, <code>NavigateToPose</code>.</dd>
+        <dt>MoveIt 2</dt><dd>Inverse kinematics, collision-free planning and execution for arms.</dd>
+        <dt>tf2</dt><dd><code>ros2 run tf2_tools view_frames</code> draws the frame tree; <code>tf2_echo map base_link</code> prints one transform.</dd>
+        <dt>ros2 bag</dt><dd>Record one drive, debug against it a hundred times.</dd>
+      </dl>
     </div>
-    <div>
-      <h3>Create, build, run</h3>
-<pre><span class="c"># 1. make a workspace</span>
-mkdir -p ~/ros2_ws/src && cd ~/ros2_ws/src
 
-<span class="c"># 2. create a package</span>
-ros2 pkg create my_package \
-  --build-type ament_python \
-  --dependencies rclpy
+    <div class="panel">
+      <h2>When nothing works</h2>
+      <ol class="debug">
+        <li>Did this terminal source the workspace? <code>source install/setup.bash</code>, then <code>ros2 pkg list | grep my_pkg</code>.</li>
+        <li>Is the node running, and is the topic name exactly right? <code>ros2 node list</code>, <code>ros2 topic list</code>. Mind slashes and namespaces.</li>
+        <li><code>echo</code> shows nothing although a publisher exists: QoS. Check <code>ros2 topic info -v</code>, then <code>ros2 topic echo --qos-reliability best_effort /scan</code>.</li>
+        <li>Two machines cannot see each other: same <code>ROS_DOMAIN_ID</code>, same network, multicast allowed. Test with <code>ros2 multicast send</code> / <code>receive</code>.</li>
+        <li>The robot ignores you: <code>ros2 topic echo /cmd_vel</code>. If commands arrive, check the motor enable, the e-stop and the robot’s real topic name.</li>
+        <li>In simulation every node needs <code>use_sim_time:=true</code>, or tf and Nav2 complain about time.</li>
+        <li>Build fails: <code>colcon build --packages-select my_pkg --event-handlers console_direct+</code> shows the real error. Missing dependency: <code>rosdep install --from-paths src --ignore-src -y</code>.</li>
+        <li>Still stuck: <code>ros2 doctor --report</code>, then search the exact error on Robotics Stack Exchange.</li>
+      </ol>
+    </div>
 
-<span class="c"># 3. install dependencies</span>
-cd ~/ros2_ws
-rosdep install --from-paths src \
-  --ignore-src -y
-
-<span class="c"># 4. build (from the workspace root)</span>
-colcon build --symlink-install
-
-<span class="c"># 5. load it into this terminal</span>
-source install/setup.bash
-
-<span class="c"># 6. run a node</span>
-ros2 run my_package my_node</pre>
-      <div class="note"><b>The #1 beginner error:</b> “Package not found”. Open a new terminal? Run <code>source install/setup.bash</code> again. Add the ROS line to <code>~/.bashrc</code> so you never forget:<br><code>source /opt/ros/&lt;distro&gt;/setup.bash</code></div>
-      <h3>Build only what changed</h3>
-<pre>colcon build --packages-select my_package</pre>
+    <div class="col">
+      <div class="panel">
+        <h2>Which ROS 2 to install</h2>
+        <table>
+          <tr><th>Distribution</th><th>Ubuntu</th><th>Until</th></tr>
+          <tr><td>Lyrical Luth, LTS, May 2026</td><td>26.04</td><td>May 2031</td></tr>
+          <tr><td>Jazzy Jalisco, LTS, May 2024</td><td>24.04</td><td>May 2029</td></tr>
+          <tr><td>Humble Hawksbill, LTS, May 2022</td><td>22.04</td><td>May 2027</td></tr>
+        </table>
+        <p class="c" style="margin-top:1.2mm">Jazzy has the most tutorials and robot packages today; Lyrical is the newest. ROS 1 ended in May 2025. Install the <code>-desktop</code> variant so RViz comes along.</p>
+      </div>
+      <div class="panel">
+        <h2>Hardware that works</h2>
+        <p>A Raspberry Pi 5 or Jetson Orin Nano Super as the brain, a Slamtec RPLIDAR C1 for mapping, a TurtleBot3 Burger or Waveshare UGV Rover (both ship with ROS 2 packages), the SO-101 arm for manipulation. Ubuntu 24.04 on x86 is easiest; on a Mac, Ubuntu inside UTM (mac.getutm.app) runs all but heavy Gazebo scenes.</p>
+      </div>
     </div>
   </div>
-  <div class="foot"><span>The ROS 2 Cheatsheet · Bharat Jain</span><span>04</span></div>
-</section>
 
-<!-- 5. CLI -->
-<section class="page cli">
-  <div class="head"><span><b>05</b> · Commands</span><span>The ROS 2 Cheatsheet</span></div>
-  <h2>The CLI <i>you'll actually use.</i></h2>
-  <p class="lede">For quick debugging and inspection. Keep this page open in a second window.</p>
-  <div class="grid2" style="gap:0 8mm">
-    <div>
-      <table>
-        <tr><th colspan="2">Run things</th></tr>
-        <tr><td><code>ros2 run my_car lidar_node</code></td><td>Start one node</td></tr>
-        <tr><td><code>ros2 launch my_car car.launch.py</code></td><td>Start several nodes at once</td></tr>
-        <tr><td><code>ros2 pkg list</code></td><td>Installed packages</td></tr>
-        <tr><td><code>ros2 pkg executables my_car</code></td><td>Nodes inside a package</td></tr>
-      </table>
-      <table>
-        <tr><th colspan="2">Nodes</th></tr>
-        <tr><td><code>ros2 node list</code></td><td>Running nodes</td></tr>
-        <tr><td><code>ros2 node info /lidar_node</code></td><td>Its topics, services, actions</td></tr>
-      </table>
-      <table>
-        <tr><th colspan="2">Topics</th></tr>
-        <tr><td><code>ros2 topic list -t</code></td><td>All topics, with types</td></tr>
-        <tr><td><code>ros2 topic echo /lidar</code></td><td>Print messages as they arrive</td></tr>
-        <tr><td><code>ros2 topic hz /camera</code></td><td>How often messages arrive</td></tr>
-        <tr><td><code>ros2 topic info /cmd_vel -v</code></td><td>Who publishes / subscribes</td></tr>
-        <tr><td><code>ros2 topic pub --once /cmd_vel \</code><br><code>&nbsp;&nbsp;geometry_msgs/msg/Twist \</code><br><code>&nbsp;&nbsp;"{linear: {x: 0.2}}"</code></td><td>Publish by hand</td></tr>
-      </table>
-    </div>
-    <div>
-      <table>
-        <tr><th colspan="2">Services, actions, params</th></tr>
-        <tr><td><code>ros2 service list -t</code></td><td>All services</td></tr>
-        <tr><td><code>ros2 service call /srv type "{...}"</code></td><td>Ask a question</td></tr>
-        <tr><td><code>ros2 action list -t</code></td><td>All actions</td></tr>
-        <tr><td><code>ros2 action send_goal /a type "{...}" -f</code></td><td>Send a goal, see feedback</td></tr>
-        <tr><td><code>ros2 param list</code></td><td>All parameters</td></tr>
-        <tr><td><code>ros2 param set /node name value</code></td><td>Change one live</td></tr>
-      </table>
-      <table>
-        <tr><th colspan="2">Types and recording</th></tr>
-        <tr><td><code>ros2 interface show &lt;type&gt;</code></td><td>Fields of a message</td></tr>
-        <tr><td><code>ros2 bag record -a</code></td><td>Record every topic</td></tr>
-        <tr><td><code>ros2 bag play &lt;folder&gt;</code></td><td>Replay a recording</td></tr>
-      </table>
-      <table>
-        <tr><th colspan="2">Look at it</th></tr>
-        <tr><td><code>rviz2</code></td><td>3D view of what the robot sees</td></tr>
-        <tr><td><code>rqt_graph</code></td><td>Live map of nodes and topics</td></tr>
-        <tr><td><code>ros2 doctor</code></td><td>Check your setup</td></tr>
-      </table>
-      <div class="note">Stuck? Tab-complete everything. <code>ros2 topic &lt;Tab&gt;&lt;Tab&gt;</code> lists every option, and <code>-h</code> works on every command.</div>
+  <div class="panel">
+    <h2>Links <small>every address from the article, typed once</small></h2>
+    <div class="links">
+      <div>
+        <h3>Learn</h3>
+        <ul>
+          <li><b>ROS 2 documentation, with the install guide</b><a href="https://docs.ros.org/en/jazzy/">docs.ros.org/en/jazzy</a></li>
+          <li><b>Tutorials, from the CLI to your first package</b><a href="https://docs.ros.org/en/jazzy/Tutorials.html">docs.ros.org/en/jazzy/Tutorials.html</a></li>
+          <li><b>Turtlesim guide</b><a href="https://docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Introducing-Turtlesim/Introducing-Turtlesim.html">docs.ros.org/en/jazzy/Tutorials/Beginner-CLI-Tools/Introducing-Turtlesim/Introducing-Turtlesim.html</a></li>
+          <li><b>Build a robot from scratch, Articulated Robotics</b><a href="https://articulatedrobotics.xyz/tutorials/mobile-robot/project-overview/">articulatedrobotics.xyz/tutorials/mobile-robot/project-overview</a></li>
+          <li><b>Ask questions</b><a href="https://robotics.stackexchange.com/">robotics.stackexchange.com</a><a href="https://discourse.openrobotics.org/">discourse.openrobotics.org</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Tools</h3>
+        <ul>
+          <li><b>Nav2</b><a href="https://docs.nav2.org/">docs.nav2.org</a></li>
+          <li><b>SLAM Toolbox</b><a href="https://github.com/SteveMacenski/slam_toolbox">github.com/SteveMacenski/slam_toolbox</a></li>
+          <li><b>MoveIt 2</b><a href="https://moveit.picknik.ai/main/index.html">moveit.picknik.ai</a></li>
+          <li><b>Gazebo with ROS 2</b><a href="https://gazebosim.org/docs/harmonic/ros_installation/">gazebosim.org/docs/harmonic/ros_installation</a></li>
+          <li><b>teleop_twist_keyboard</b><a href="https://github.com/ros2/teleop_twist_keyboard">github.com/ros2/teleop_twist_keyboard</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Projects 3 to 5</h3>
+        <ul>
+          <li><b>Frontier exploration, a reference implementation</b><a href="https://github.com/robo-friends/m-explore-ros2">github.com/robo-friends/m-explore-ros2</a></li>
+          <li><b>The original frontier paper, Yamauchi 1997</b><a href="https://ieeexplore.ieee.org/document/613851">ieeexplore.ieee.org/document/613851</a></li>
+          <li><b>Semantic maps, VLMaps</b><a href="https://github.com/vlmaps/vlmaps">github.com/vlmaps/vlmaps</a></li>
+          <li><b>ROS-MCP server</b><a href="https://github.com/robotmcp/ros-mcp-server">github.com/robotmcp/ros-mcp-server</a></li>
+          <li><b>Model Context Protocol</b><a href="https://modelcontextprotocol.io/">modelcontextprotocol.io</a></li>
+        </ul>
+      </div>
+      <div>
+        <h3>Robots and parts</h3>
+        <ul>
+          <li><b>TurtleBot3: simulation, SLAM, navigation</b><a href="https://emanual.robotis.com/docs/en/platform/turtlebot3/overview/">emanual.robotis.com/docs/en/platform/turtlebot3/overview</a></li>
+          <li><b>Waveshare UGV Rover, ROS 2 kit</b><a href="https://www.waveshare.com/ugv-rover-ros2-kit.htm">waveshare.com/ugv-rover-ros2-kit.htm</a></li>
+          <li><b>RPLIDAR C1 and its ROS 2 driver</b><a href="https://www.slamtec.com/en/c1">slamtec.com/en/c1</a><a href="https://github.com/Slamtec/sllidar_ros2">github.com/Slamtec/sllidar_ros2</a></li>
+          <li><b>SO-101 arm: guide, parts, kits</b><a href="https://huggingface.co/docs/lerobot/so101">huggingface.co/docs/lerobot/so101</a><a href="https://github.com/TheRobotStudio/SO-ARM100">github.com/TheRobotStudio/SO-ARM100</a></li>
+          <li><b>My code, videos and the article</b><a href="https://github.com/itsbharatj">github.com/itsbharatj</a><a href="https://x.com/BharatJain8873">x.com/BharatJain8873</a><a href="YOUTUBE_URL">YOUTUBE_URL</a></li>
+        </ul>
+      </div>
     </div>
   </div>
-  <div class="foot"><span>The ROS 2 Cheatsheet · Bharat Jain</span><span>05</span></div>
+
+  <div class="foot">
+    <span>Made by Bharat Jain for people building their first robots. Free to print and share.</span>
+    <span>Latest version and the article: <a href="https://ros2-projects-landing.vercel.app/">ros2-projects-landing.vercel.app</a></span>
+  </div>
 </section>
-
-<!-- 6. TOOLS & HARDWARE -->
-<section class="page">
-  <div class="head"><span><b>06</b> · Tools and setup</span><span>The ROS 2 Cheatsheet</span></div>
-  <h2>Tools, hardware <i>and setup.</i></h2>
-  <p class="lede">Five tools do most of the heavy lifting. Hardware is optional: everything in this guide can start in simulation.</p>
-  <div class="grid2" style="margin-bottom:6mm">
-    <div class="card"><span class="num">RViz</span><h3>See what the robot sees</h3><p>LiDAR points, camera images, maps and paths in 3D.</p></div>
-    <div class="card"><span class="num">rqt_graph</span><h3>See how nodes connect</h3><p>A live map of nodes and topics, so you can spot a missing link.</p></div>
-    <div class="card"><span class="num">Gazebo</span><h3>Test in a virtual world</h3><p>A simulator for your robot before you use real hardware.</p></div>
-    <div class="card"><span class="num">Nav2</span><h3>Drive from A to B</h3><p>A ready-made navigation system that moves a mobile robot while avoiding obstacles.</p></div>
-    <div class="card"><span class="num">MoveIt</span><h3>Move an arm safely</h3><p>The Nav2 of robot arms: plans movements that don't hit anything, and does the inverse kinematics for you.</p></div>
-    <div class="card"><span class="num">SLAM Toolbox</span><h3>Build a map</h3><p>Turns LiDAR scans into a map while the robot drives. Cartographer is the alternative.</p></div>
-  </div>
-  <div class="grid2">
-    <div>
-      <h3>Hardware (or use simulation)</h3>
-      <table>
-        <tr><td><b>Computer</b></td><td>RPi or Jetson Orin Nano on the robot</td></tr>
-        <tr><td><b>Sensor</b></td><td>A 2D LiDAR</td></tr>
-        <tr><td><b>Robot</b></td><td>TurtleBot3, a ROS&nbsp;2-supported AMR such as Waveshare's UGV Rover, or build your own</td></tr>
-        <tr><td><b>Arm</b></td><td>SO-101: about $200 to build, free in simulation</td></tr>
-        <tr><td><b>OS</b></td><td>Ubuntu, ideally on x86. On a Mac, VMs also work well</td></tr>
-      </table>
-    </div>
-    <div>
-      <h3>Install checklist</h3>
-      <ul class="tick">
-        <li>Install Ubuntu (native, dual boot or a VM)</li>
-        <li>Install the ROS&nbsp;2 distro that matches your Ubuntu version from <a href="https://docs.ros.org">docs.ros.org</a>. Pick an LTS release</li>
-        <li>Add <code>source /opt/ros/&lt;distro&gt;/setup.bash</code> to <code>~/.bashrc</code></li>
-        <li>Install <code>colcon</code> and <code>rosdep</code></li>
-        <li>Run <code>ros2 run turtlesim turtlesim_node</code>. If a turtle appears, you're ready</li>
-      </ul>
-      <div class="note">Same network, robots not showing up? Make sure every machine uses the same <code>ROS_DOMAIN_ID</code>.</div>
-    </div>
-  </div>
-  <div class="foot"><span>The ROS 2 Cheatsheet · Bharat Jain</span><span>06</span></div>
-</section>
-
-<!-- 7. ROADMAP -->
-<section class="page">
-  <div class="head"><span><b>07</b> · Roadmap</span><span>The ROS 2 Cheatsheet</span></div>
-  <h2>The visual <i>roadmap.</i></h2>
-  <p class="lede" style="margin-bottom:3mm">Seven projects, each one building on the last. Start on day one and fill in the gaps as you go.</p>
-  <div class="roadmap">
-    <p class="phase">Phase 1 · Move</p>
-    <div class="stop"><div class="dot">00</div><div><h3>Turtlesim</h3><p>The “Hello World!” of ROS. Move a turtle and watch messages flow over <code>cmd_vel</code>.</p></div><div class="learn"><b>You learn</b>Nodes, topics, testing your install</div></div>
-    <div class="stop"><div class="dot">01</div><div><h3>Teleoperate a real robot</h3><p>Drive an AMR with the keyboard, real or in Gazebo.</p></div><div class="learn"><b>You learn</b>Multiple nodes in multiple terminals, RViz</div></div>
-    <p class="phase">Phase 2 · Autonomy</p>
-    <div class="stop"><div class="dot">02</div><div><h3>Map a room with SLAM</h3><p>Build a map with LiDAR, then send Nav2 a goal.</p></div><div class="learn"><b>You learn</b>SLAM, A→B navigation, dynamic obstacle avoidance</div></div>
-    <div class="stop hi"><div class="dot">03</div><div><h3>Frontier exploration</h3><p>Your own algorithm and nodes: the robot maps the room on its own.</p></div><div class="learn"><b>You learn</b>Building on ROS&nbsp;2, co-developing with a coding agent</div></div>
-    <p class="phase">Phase 3 · Intelligence</p>
-    <div class="stop"><div class="dot">04</div><div><h3>Semantic navigation</h3><p>A VLM labels what the robot sees, so you can send <code>/go_to door</code>.</p></div><div class="learn"><b>You learn</b>VLMs, vector databases, semantic maps</div></div>
-    <div class="stop"><div class="dot">05</div><div><h3>LLM-controlled robot</h3><p>Command the robot in natural language through ROS-MCP.</p></div><div class="learn"><b>You learn</b>MCP, LLMs as planners for long tasks</div></div>
-    <p class="phase">Phase 4 · Manipulation</p>
-    <div class="stop hi"><div class="dot">06</div><div><h3>SO-101 arm with MoveIt</h3><p>A $200 desk arm. Move to a 3D point, record and replay trajectories.</p></div><div class="learn"><b>You learn</b>Inverse kinematics, MoveIt, teleop, imitation-learning hardware</div></div>
-  </div>
-  <div class="foot"><span>The ROS 2 Cheatsheet · Bharat Jain</span><span>07</span></div>
-</section>
-
-<!-- 8. PROJECTS 0–2 -->
-<section class="page">
-  <div class="head"><span><b>08</b> · Projects 0–2</span><span>The ROS 2 Cheatsheet</span></div>
-  <h2>Move, teleop, <i>map.</i></h2>
-  <p class="lede">The fundamentals. Do these in simulation if you don't have a robot yet.</p>
-
-  <p class="eyebrow"><span class="num">00</span> · Turtlesim</p>
-<pre><span class="c"># terminal 1: a blue window with a turtle</span>
-ros2 run turtlesim turtlesim_node
-<span class="c"># terminal 2: drive it with the arrow keys</span>
-ros2 run turtlesim turtle_teleop_key
-<span class="c"># terminal 3: watch the velocity commands flow</span>
-ros2 topic echo /turtle1/cmd_vel</pre>
-  <p>Before you press a key, nothing is published on <code>cmd_vel</code>. That's why the turtle sits still.</p>
-
-  <p class="eyebrow" style="margin-top:5mm"><span class="num">01</span> · Teleoperate a real robot</p>
-  <div class="grid2">
-<pre><span class="c"># start keyboard teleop</span>
-ros2 run teleop_twist_keyboard \
-  teleop_twist_keyboard
-
-<span class="c"># in another terminal</span>
-ros2 topic echo /cmd_vel</pre>
-    <div><p>The keys <code>i j k l</code> map to linear and angular velocities. Teleop publishes them to <code>/cmd_vel</code> and the robot's driver turns them into wheel speeds.</p>
-      <p>Your robot may use a different node or package name, so check its docs.</p></div>
-  </div>
-
-  <p class="eyebrow" style="margin-top:3mm"><span class="num">02</span> · Map a room with SLAM, then navigate</p>
-  <div class="grid2">
-<pre><span class="c"># 1. bring up robot + LiDAR</span>
-<span class="c"># 2. start mapping</span>
-ros2 launch slam_toolbox \
-  online_async_launch.py
-<span class="c"># 3. drive with teleop, watch RViz</span>
-<span class="c"># 4. save the map</span>
-ros2 run nav2_map_server \
-  map_saver_cli -f my_room
-<span class="c"># 5. navigate on it</span>
-ros2 launch nav2_bringup bringup_launch.py \
-  map:=my_room.yaml</pre>
-    <div><ul class="tick"><li>Drive slowly while mapping. Fast turns blur the map</li><li>In RViz, use <b>2D Pose Estimate</b> to tell Nav2 where the robot is</li><li>Then click <b>Nav2 Goal</b> and the robot plans a path and drives there</li><li>Put a box in its way and watch it re-plan</li></ul></div>
-  </div>
-  <div class="foot"><span>The ROS 2 Cheatsheet · Bharat Jain</span><span>08</span></div>
-</section>
-
-<!-- 9. PROJECTS 3–6 -->
-<section class="page">
-  <div class="head"><span><b>09</b> · Projects 3–6</span><span>The ROS 2 Cheatsheet</span></div>
-  <h2>Explore, see, <i>talk, grasp.</i></h2>
-  <p class="lede">From here you stop only using ROS&nbsp;2 tools and start building your own on top of them, with a coding agent writing the code.</p>
-  <div class="grid2">
-    <div class="card"><span class="num">03 · Frontier exploration</span>
-      <h3 style="margin-top:2mm">The robot maps the room itself</h3>
-      <p>Frontiers are the edges between mapped and unexplored space. The loop:</p>
-      <ol style="padding-left:4.5mm;margin:0 0 2mm"><li>Find frontier cells on the map</li><li>Group and sort them</li><li>Pick one as a goal and send it to Nav2</li><li>Repeat until no frontiers are left</li></ol>
-      <p>It works like a robot vacuum mapping a new house. Describe the goal and constraints to Codex or Claude Code, then test and fix iteratively.</p></div>
-    <div class="card"><span class="num">04 · Semantic navigation</span>
-      <h3 style="margin-top:2mm">“Go to the door”</h3>
-      <p>An occupancy grid only knows free, occupied and unknown. To add meaning:</p>
-      <ol style="padding-left:4.5mm;margin:0 0 2mm"><li>Capture images at regular intervals while exploring</li><li>A VLM labels objects and places</li><li>Store labels and coordinates in a vector database</li><li>Match a query by meaning and send the best coordinates to Nav2</li></ol>
-      <p>Matching by meaning means “couch” still finds “sofa”.</p></div>
-    <div class="card"><span class="num">05 · LLM-controlled robot</span>
-      <h3 style="margin-top:2mm">Talk to your robot</h3>
-      <p>An MCP server bridges ROS&nbsp;2 and an LLM client, so the model can read sensors and send commands. Connect the open-source ROS-MCP server to Claude, then try:</p>
-      <ul class="tick"><li>“What topics are available?”</li><li>“What's the message type of /cmd_vel?”</li><li>“Make a complete circle.”</li><li>“Survey the room.” (a long-horizon task)</li></ul></div>
-    <div class="card"><span class="num">06 · SO-101 arm + MoveIt</span>
-      <h3 style="margin-top:2mm">A factory arm on your desk</h3>
-      <ol style="padding-left:4.5mm;margin:0 0 2mm"><li>Assemble the arm (allow 4–6 hours) or set up simulation</li><li>Calibrate leader and follower, get teleop working (LeLab gives you a GUI)</li><li>Build the ROS&nbsp;2 package and connect MoveIt</li><li>Record trajectories, name them, and replay them yourself or through an LLM</li></ol>
-      <p>By default the SO-101 runs LeRobot. ROS&nbsp;2 adds deterministic control and MoveIt's IK and planning.</p></div>
-  </div>
-  <div class="foot"><span>The ROS 2 Cheatsheet · Bharat Jain</span><span>09</span></div>
-</section>
-
-<!-- 10. LEARNING ON DEMAND + LINKS -->
-<section class="page">
-  <div class="head"><span><b>10</b> · Keep going</span><span>The ROS 2 Cheatsheet</span></div>
-  <h2>Learn <i>on demand.</i></h2>
-  <p class="lede">You don't need months of courses, advanced math or years of programming first. Start on real projects from day one, get your hands dirty, and fill in the gaps as you go.</p>
-  <div class="grid2">
-    <div>
-      <h3>My AI workflow</h3>
-      <ul class="tick">
-        <li>Write down what the robot must do and its constraints first</li>
-        <li>Let a coding agent (Codex, Claude Code) write the code, ideally inside a harness</li>
-        <li>Run it, then feed back the exact errors and <code>ros2 topic echo</code> output</li>
-        <li>Iterate on small steps: one node, one behaviour at a time</li>
-      </ul>
-      <h3 style="margin-top:4mm">When it doesn't work</h3>
-      <ul class="tick">
-        <li>Did you <code>source install/setup.bash</code>?</li>
-        <li>Is the node running? <code>ros2 node list</code></li>
-        <li>Is data flowing? <code>ros2 topic hz /topic</code></li>
-        <li>Are names and types right? <code>rqt_graph</code>, <code>ros2 topic info -v</code></li>
-        <li>Using two machines? Same <code>ROS_DOMAIN_ID</code></li>
-      </ul>
-    </div>
-    <div>
-      <h3>Every link</h3>
-      <table>
-        <tr><td>ROS&nbsp;2 docs + install</td><td><a href="https://docs.ros.org">docs.ros.org</a></td></tr>
-        <tr><td>Turtlesim tutorial</td><td><a href="https://docs.ros.org/en/foxy/Tutorials/Beginner-CLI-Tools/Introducing-Turtlesim/Introducing-Turtlesim.html">docs.ros.org · turtlesim</a></td></tr>
-        <tr><td>TurtleBot3 in Gazebo</td><td><a href="https://docs.robotis.com/docs/systems/turtlebot3/simulation/gazebo_simulation">docs.robotis.com</a></td></tr>
-        <tr><td>TurtleBot3</td><td><a href="https://www.turtlebot.com/turtlebot3/">turtlebot.com</a></td></tr>
-        <tr><td>Waveshare UGV Rover</td><td><a href="https://www.waveshare.com/ugv-rover.htm">waveshare.com</a></td></tr>
-        <tr><td>Build your own robot</td><td><a href="https://articulatedrobotics.xyz/tutorials/mobile-robot/project-overview/">articulatedrobotics.xyz</a></td></tr>
-        <tr><td>Gazebo</td><td><a href="https://gazebosim.org">gazebosim.org</a></td></tr>
-        <tr><td>SLAM Toolbox</td><td><a href="https://github.com/SteveMacenski/slam_toolbox">github.com/SteveMacenski</a></td></tr>
-        <tr><td>Nav2</td><td><a href="https://docs.nav2.org">docs.nav2.org</a></td></tr>
-        <tr><td>MoveIt</td><td><a href="https://moveit.ai">moveit.ai</a></td></tr>
-        <tr><td>ROS-MCP server</td><td><a href="https://github.com/robotmcp/ros-mcp-server">github.com/robotmcp</a></td></tr>
-        <tr><td>SO-101 + LeRobot</td><td><a href="https://huggingface.co/docs/lerobot/so101">huggingface.co/docs/lerobot</a></td></tr>
-      </table>
-    </div>
-  </div>
-  <div class="card" style="margin-top:2mm;background:var(--ink);color:var(--paper);border-color:var(--ink)">
-    <p class="eyebrow" style="color:var(--accent)">Free · live · 5 days · 10 people</p>
-    <h3 style="font:400 20pt/1.1 var(--serif);margin-bottom:2mm">Want to build these together?</h3>
-    <p style="color:#cfc8b8;margin:0">I'm running a free live 5-day ROS&nbsp;2 bootcamp once at least 10 people are interested: projects in more detail, doubts answered, and a community to learn with. If you ticked the box on the form, you'll hear first.</p>
-  </div>
-  <div class="foot"><span>Follow along on YouTube and on X @BharatJain8873</span><span>10</span></div>
-</section>
-
 </body>
 </html>
