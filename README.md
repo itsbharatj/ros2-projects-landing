@@ -9,7 +9,8 @@ index.html              the page and all its copy
 styles.css              design (colours and fonts are at the top in :root)
 app.js                  form validation and the Supabase insert
 config.js               Supabase URL + anon key (public, see below)
-assets/ros2-cheatsheet.pdf   the download (currently a PLACEHOLDER)
+assets/ros2-cheatsheet.pdf   the 10-page cheatsheet download
+cheatsheet/cheatsheet.html   source for the PDF
 assets/media/           photos and the hero video loop
 supabase/schema.sql     table, constraints and Row Level Security
 ```
@@ -39,9 +40,17 @@ The anon key is meant to be public. What protects the data is Row Level Security
 
 If you start getting spam, turn on Supabase's rate limits or put a Cloudflare Turnstile check in front of the form.
 
-## Replace the cheatsheet
+## The cheatsheet
 
-`assets/ros2-cheatsheet.pdf` is a placeholder. Save the real PDF with the same name and push. The file is public on GitHub Pages, so the form is a gentle gate rather than a lock.
+`assets/ros2-cheatsheet.pdf` is the 10-page cheatsheet. Its source is `cheatsheet/cheatsheet.html`. To change it, edit that file and re-export the PDF:
+
+```bash
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+  --no-pdf-header-footer --virtual-time-budget=8000 \
+  --print-to-pdf=assets/ros2-cheatsheet.pdf "file://$PWD/cheatsheet/cheatsheet.html"
+```
+
+(Or open the HTML in Chrome, Print, Save as PDF, Margins: None, Background graphics: on.) The PDF is public on GitHub Pages, so the form is a gentle gate rather than a lock.
 
 ## Edit the copy
 
